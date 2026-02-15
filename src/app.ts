@@ -1,7 +1,7 @@
 import express from "express";
-import type { Request, Response, NextFunction } from "express";
 
 import usersRoutes from "./routes/users-routes.js";
+import errorHandler from "./middlewares/errorHandler.js";
 
 import { HttpError } from "./errors/http-error.js";
 
@@ -13,10 +13,6 @@ app.use((req, res, next) => {
   throw new HttpError("Could not find this route.", 404);
 });
 
-app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
-  res
-    .status(error.status ?? 500)
-    .json({ message: error.message ?? "Internal Server Error" });
-});
+app.use(errorHandler);
 
 export default app;
