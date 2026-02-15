@@ -15,5 +15,5 @@ export const signupService = async (
     name,
     lastName,
   );
-  return createdUser.toObject();
+  return createdUser;
 };

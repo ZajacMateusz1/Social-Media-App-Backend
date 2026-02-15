@@ -6,11 +6,17 @@ export const signupRepository = async (
   name: string,
   lastName: string,
 ) => {
-  const createdUser = new User({
+  const user = new User({
     email,
     hashedPassword,
     name,
     lastName,
   });
-  return createdUser.save();
+  const createdUser = await user.save();
+  return {
+    id: createdUser._id,
+    email: createdUser.email,
+    name: createdUser.name,
+    lastName: createdUser.lastName,
+  };
 };

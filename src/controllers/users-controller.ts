@@ -9,12 +9,7 @@ export const signup = async (
   const { email, password, name, lastName } = req.body;
   try {
     const createdUser = await signupService(email, password, name, lastName);
-    res.status(201).json({
-      id: createdUser._id,
-      email: createdUser.email,
-      name: createdUser.name,
-      lastName: createdUser.lastName,
-    });
+    res.status(201).json(createdUser);
   } catch (error) {
     return next(error);
   }
