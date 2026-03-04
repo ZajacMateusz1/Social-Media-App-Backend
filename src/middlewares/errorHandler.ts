@@ -7,9 +7,14 @@ const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
+  if (res.headersSent) {
+    return next(error);
+  }
   console.error(error);
   const mappedError = mapToHTTPError(error);
-  return res.status(mappedError.status).json({ message: mappedError.message });
+  return res
+    .status(mappedError.status)
+    .json({ message: mappedError.message, details: mappedError.details });
 };
 
 export default errorHandler;

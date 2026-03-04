@@ -4,11 +4,15 @@ const UserSchema = z.object({
   email: z.email(),
   password: z
     .string()
-    .min(8)
-    .refine((val) => /[a-zA-Z]/.test(val))
-    .refine((val) => /\d/.test(val)),
-  name: z.string().trim().min(1),
-  lastName: z.string().trim().min(1),
+    .min(8, { error: "Min password length is 8" })
+    .regex(/[a-zA-Z]/, {
+      error: "Password must contain letter",
+    })
+    .regex(/\d/, {
+      error: "Password must contain a number",
+    }),
+  name: z.string().trim().min(1, { error: "Min length is 1 character" }),
+  lastName: z.string().trim().min(1, { error: "Min length is 1 character" }),
 });
 
 export default UserSchema;
