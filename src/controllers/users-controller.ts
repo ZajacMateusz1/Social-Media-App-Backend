@@ -1,17 +1,34 @@
 import type { Request, Response, NextFunction } from "express";
-import { signupService } from "../services/users-service.js";
+import { registerService, loginService } from "../services/users-service.js";
 
-export const signup = async (
+export const register = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const { email, password, name, lastName } = req.body;
   try {
-    const createdUser = await signupService(email, password, name, lastName);
-    res.status(201).json(createdUser);
+    const { email, password, name, lastName } = req.body;
+    const registerResponse = await registerService(
+      email,
+      password,
+      name,
+      lastName,
+    );
+    res.status(201).json(registerResponse);
   } catch (error) {
     return next(error);
   }
 };
-export const login = (req: Request, res: Response, next: NextFunction) => {};
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { email, password } = req.body;
+    const loginResponse = await loginService(email, password);
+    res.json(loginResponse);
+  } catch (error) {
+    next(error);
+  }
+};

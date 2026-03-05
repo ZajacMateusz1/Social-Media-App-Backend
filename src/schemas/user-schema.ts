@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const UserSchema = z.object({
+export const RegisterSchema = z.object({
   email: z.email(),
   password: z
     .string()
@@ -15,4 +15,7 @@ const UserSchema = z.object({
   lastName: z.string().trim().min(1, { error: "Min length is 1 character" }),
 });
 
-export default UserSchema;
+export const LoginSchema = z.object({
+  email: z.email(),
+  password: z.string(),
+});

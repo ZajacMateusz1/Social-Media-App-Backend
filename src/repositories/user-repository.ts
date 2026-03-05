@@ -1,6 +1,7 @@
+import { HttpError } from "../errors/http-error.js";
 import User from "../models/user-model.js";
 
-export const signupRepository = async (
+export const registerRepository = async (
   email: string,
   hashedPassword: string,
   name: string,
@@ -19,4 +20,12 @@ export const signupRepository = async (
     name: createdUser.name,
     lastName: createdUser.lastName,
   };
+};
+
+export const loginRepository = async (email: string) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new HttpError("Invalid email or password", 401);
+  }
+  return user;
 };
