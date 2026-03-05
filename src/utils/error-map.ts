@@ -1,5 +1,6 @@
 import { HttpError } from "../errors/http-error.js";
 import { z, ZodError } from "zod";
+import { mongo } from "mongoose";
 const mapToHTTPError = (error: unknown): HttpError => {
   if (error instanceof HttpError) return error;
 
@@ -11,14 +12,9 @@ const mapToHTTPError = (error: unknown): HttpError => {
     );
   }
 
-  if ((error as any).code === 11000) {
+  if (error instanceof mongo.MongoServerError && error.code === 11000) {
     return new HttpError("Resource already exists", 409);
   }
-
-  if ((error as any).name === "ValidationError") {
-    return new HttpError("Validation error", 422);
-  }
-
   return new HttpError("Internal Server Error", 500);
 };
 export default mapToHTTPError;

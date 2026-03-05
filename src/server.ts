@@ -1,16 +1,12 @@
 import dotenv from "dotenv";
+dotenv.config();
 import app from "./app.js";
 import { connectDB } from "./config/db.js";
+import { env } from "./config/env.js";
 const port = 5000;
 
-dotenv.config();
-const DB_KEY = process.env.DB_KEY;
-if (!DB_KEY) {
-  throw new Error("Add DB_KEY in .env");
-}
-
 const start = async () => {
-  await connectDB(DB_KEY);
+  await connectDB(env.DB_KEY);
   app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
   });
